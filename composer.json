@@ -16,9 +16,9 @@
     "require": {
         "php": "^8.3",
         "contao/core-bundle": "^5.3",
-        "symfony/asset": "^6.4",
-        "symfony/dependency-injection": "^6.4",
-        "symfony/http-kernel": "^6.4",
+        "symfony/asset": "^6.4 || ^7.0",
+        "symfony/dependency-injection": "^6.4 || ^7.0",
+        "symfony/http-kernel": "^6.4 || ^7.0",
         "terminal42/dc_multilingual": "^4.5"
     },
     "require-dev": {
