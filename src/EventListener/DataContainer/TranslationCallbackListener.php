@@ -39,7 +39,7 @@ class TranslationCallbackListener
             return $this->slug->generate($title, [], $duplicateCheck);
         }
 
-        if (1 !== preg_match('/^[1-9]\d*$/', $value)) {
+        if (1 === preg_match('/^[1-9]\d*$/', $value)) {
             throw new \Exception(\sprintf($GLOBALS['TL_LANG']['ERR']['aliasNumeric'], $value));
         }
         if ($duplicateCheck($value)) {
