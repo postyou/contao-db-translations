@@ -21,9 +21,7 @@ class LoadTranslationListener
     #[AsHook('loadLanguageFile')]
     public function loadLanguageFile(string $name, string $currentLanguage, string $cacheKey): void
     {
-        if ('DB' === $name) {
-            $translations = TranslationModel::findAll()->fetchAll();
-
+        if ('DB' === $name && null !== ($translations = TranslationModel::findAll()?->fetchAll())) {
             $GLOBALS['TL_LANG']['DB'] = array_combine(
                 array_column($translations, 'alias'),
                 array_column($translations, 'text'),
@@ -34,7 +32,7 @@ class LoadTranslationListener
     #[AsHook('loadDataContainer')]
     public function setFallbackLanguage(string $table): void
     {
-        if (TranslationModel::TABLE === $table && $fallbackLang = Config::get('translationFallbackLanguage')) {
+        if (TranslationModel::TABLE === $table && '' !== ($fallbackLang = Config::get('translationFallbackLanguage'))) {
             $GLOBALS['TL_DCA'][TranslationModel::TABLE]['config']['fallbackLang'] = $fallbackLang;
         }
     }

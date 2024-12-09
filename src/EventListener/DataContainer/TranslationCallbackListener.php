@@ -35,11 +35,11 @@ class TranslationCallbackListener
         ;
 
         // Generate an alias if there is none
-        if (!$value) {
-            return $this->slug->generate((string) $dc->getCurrentRecord()?->title, [], $duplicateCheck);
+        if ('' === $value && \is_string($title = $dc->getCurrentRecord()['title'] ?? null)) {
+            return $this->slug->generate($title, [], $duplicateCheck);
         }
 
-        if (preg_match('/^[1-9]\d*$/', $value)) {
+        if (1 !== preg_match('/^[1-9]\d*$/', $value)) {
             throw new \Exception(\sprintf($GLOBALS['TL_LANG']['ERR']['aliasNumeric'], $value));
         }
         if ($duplicateCheck($value)) {
@@ -49,8 +49,14 @@ class TranslationCallbackListener
         return $value;
     }
 
+    /**
+     * @param array<string, mixed> $row
+     * @param list<string>         $labels
+     *
+     * @return list<string> array
+     */
     #[AsCallback(TranslationModel::TABLE, target: 'list.label.label')]
-    public function getLanguagesForLabel(array $row, string $label, DataContainer $dc, array $labels)
+    public function getLanguagesForLabel(array $row, string $label, DataContainer $dc, array $labels): array
     {
         $result = $this->db
             ->prepare('SELECT text, language FROM '.TranslationModel::TABLE.' WHERE langPid = ? AND text != ""')
@@ -58,7 +64,10 @@ class TranslationCallbackListener
             ->fetchAllAssociative()
         ;
 
-        $languages = array_map(static fn (array $value) => "<span title='{$value['text']}'>{$value['language']}</span>", $result);
+        $languages = array_map(static fn (array $value) => \sprintf('<span title="%s">%s</span>',
+            \is_string($value['text']) ? $value['text'] : '',
+            \is_string($value['language']) ? $value['language'] : '',
+        ), $result);
 
         $labels[1] .= '<span class="label-info" style="cursor:help;">['.implode(', ', $languages).']</span>';
         $labels[2] = '<code>{{label::DB:'.$row['alias'].'}}</code>';

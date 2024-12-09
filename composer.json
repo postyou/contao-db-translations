@@ -26,7 +26,8 @@
         "contao/easy-coding-standard": "^6.13",
         "contao/rector": "^1.2",
         "phpstan/phpstan": "^1.12",
-        "phpstan/phpstan-symfony": "^1.4"
+        "phpstan/phpstan-symfony": "^1.4",
+        "phpstan/phpstan-strict-rules": "^1.6"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >=3.0"
