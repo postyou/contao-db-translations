@@ -1,0 +1,6 @@
+.php-version
+composer.lock
+/.vscode/
+/node_modules/
+/vendor/
+package-lock.json

@@ -1,0 +1,12 @@
+includes:
+    - tools/phpstan/vendor/phpstan/phpstan-symfony/extension.neon
+    - tools/phpstan/vendor/phpstan/phpstan-symfony/rules.neon
+
+parameters:
+    level: max
+
+    paths:
+        - %currentWorkingDirectory%/src
+
+    universalObjectCratesClasses:
+        - Contao\Model

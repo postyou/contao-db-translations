@@ -1,0 +1,55 @@
+{
+    "name": "postyou/contao-db-translations",
+    "description": "Provides a database table that allows backend users to manage tranlatable labels.",
+    "license": "LGPL-3.0-or-later",
+    "type": "contao-bundle",
+    "authors": [
+        {
+            "name": "Postyou Werbeagentur",
+            "homepage": "https://postyou.de/"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/postyou/contao-db-translations/issues",
+        "source": "https://github.com/postyou/contao-db-translations"
+    },
+    "require": {
+        "php": "^8.3",
+        "contao/core-bundle": "^5.3",
+        "symfony/asset": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "terminal42/dc_multilingual": "^4.5"
+    },
+    "require-dev": {
+        "contao/manager-plugin": "^2.0",
+        "contao/easy-coding-standard": "^6.13",
+        "contao/rector": "^1.2",
+        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan-symfony": "^1.4"
+    },
+    "conflict": {
+        "contao/manager-plugin": "<2.0 || >=3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Postyou\\ContaoDbTranslationsBundle\\": "src/"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "Postyou\\ContaoDbTranslationsBundle\\ContaoManager\\Plugin"
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": true,
+            "php-http/discovery": false,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "contao/manager-plugin": true
+        }
+    },
+    "scripts": {
+        "ecs": "@php vendor/bin/ecs check --fix",
+        "rector": "@php vendor/bin/rector",
+        "phpstan": "@php vendor/bin/phpstan analyse"
+    }
+}
