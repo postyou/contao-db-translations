@@ -17,6 +17,7 @@ use Contao\CoreBundle\Slug\Slug;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use Postyou\ContaoDbTranslationsBundle\Model\TranslationModel;
+use Terminal42\DcMultilingualBundle\Driver;
 
 class TranslationCallbackListener
 {
@@ -26,7 +27,7 @@ class TranslationCallbackListener
     ) {}
 
     #[AsCallback(TranslationModel::TABLE, target: 'fields.alias.save')]
-    public function generateAlias(string $value, DataContainer $dc): string
+    public function generateAlias(string $value, Driver $dc): string
     {
         $duplicateCheck = fn (string $alias): bool => $this->db
             ->prepare('SELECT id FROM '.TranslationModel::TABLE.' WHERE alias = ? AND id != ?')
@@ -35,7 +36,7 @@ class TranslationCallbackListener
         ;
 
         // Generate an alias if there is none
-        if ('' === $value && \is_string($title = $dc->getCurrentRecord()['title'] ?? null)) {
+        if ('' === $value && \is_string($title = $dc->getActiveRecord()['title'] ?? null)) {
             return $this->slug->generate($title, [], $duplicateCheck);
         }
 
