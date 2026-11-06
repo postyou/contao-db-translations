@@ -29,11 +29,10 @@ class TranslationCallbackListener
     #[AsCallback(TranslationModel::TABLE, target: 'fields.alias.save')]
     public function generateAlias(string $value, Driver $dc): string
     {
-        $duplicateCheck = fn (string $alias): bool => $this->db
-            ->prepare('SELECT id FROM '.TranslationModel::TABLE.' WHERE alias = ? AND id != ?')
-            ->executeQuery([$alias, $dc->id])
-            ->rowCount() > 0
-        ;
+        $duplicateCheck = fn (string $alias): bool => false !== $this->db->fetchOne(
+            'SELECT id FROM '.TranslationModel::TABLE.' WHERE alias = ? AND id != ?',
+            [$alias, $dc->id],
+        );
 
         // Generate an alias if there is none
         if ('' === $value && \is_string($title = $dc->getActiveRecord()['title'] ?? null)) {
@@ -59,11 +58,10 @@ class TranslationCallbackListener
     #[AsCallback(TranslationModel::TABLE, target: 'list.label.label')]
     public function getLanguagesForLabel(array $row, string $label, DataContainer $dc, array $labels): array
     {
-        $result = $this->db
-            ->prepare('SELECT text, language FROM '.TranslationModel::TABLE.' WHERE langPid = ? AND text != ""')
-            ->executeQuery([$row['id']])
-            ->fetchAllAssociative()
-        ;
+        $result = $this->db->fetchAllAssociative(
+            'SELECT text, language FROM '.TranslationModel::TABLE.' WHERE langPid = ? AND text != \'\'',
+            [$row['id']],
+        );
 
         $languages = array_map(static fn (array $value) => \sprintf('<span title="%s">%s</span>',
             \is_string($value['text']) ? $value['text'] : '',
