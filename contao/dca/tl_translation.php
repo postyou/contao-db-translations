@@ -71,12 +71,12 @@ $GLOBALS['TL_DCA'][TranslationModel::TABLE] = [
             'sql' => ['type' => 'string', 'length' => 255, 'default' => '', 'customSchemaOptions' => ['case_sensitive' => true]],
         ],
         'text' => [
-            'inputType' => 'text',
+            'inputType' => 'textarea',
             'flag' => 1,
-            'eval' => ['tl_class' => 'w50', 'mandatory' => true, 'maxlength' => 255, 'translatableFor' => '*'],
+            'eval' => ['tl_class' => 'clr', 'mandatory' => true, 'translatableFor' => '*'],
             'sorting' => true,
             'search' => true,
-            'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
+            'sql' => ['type' => 'text', 'length' => 65535, 'notnull' => false],
         ],
     ],
 
