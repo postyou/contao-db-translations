@@ -13,11 +13,15 @@ declare(strict_types=1);
 namespace Postyou\ContaoDbTranslationsBundle\EventListener;
 
 use Contao\Config;
+use Contao\CoreBundle\Cache\CacheTagManager;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Postyou\ContaoDbTranslationsBundle\Model\TranslationModel;
 
 class LoadTranslationListener
 {
+
+    public function __construct(private readonly CacheTagManager $cacheTagManager) {}
+
     #[AsHook('loadLanguageFile')]
     public function loadLanguageFile(string $name, string $currentLanguage, string $cacheKey): void
     {
@@ -26,6 +30,10 @@ class LoadTranslationListener
                 array_column($translations, 'alias'),
                 array_column($translations, 'text'),
             );
+        }
+
+        if ('DB' === $name) {
+            $this->cacheTagManager->tagWithModelClass(TranslationModel::class);
         }
     }
 
